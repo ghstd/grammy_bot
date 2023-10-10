@@ -50,6 +50,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 	try {
 		const body = JSON.parse(event.body)
 
+		await bot.init()
 		await bot.handleUpdate(body)
 		return {
 			statusCode: 200,
