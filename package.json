@@ -5,21 +5,22 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "tsc",
-		"start": "node ./dist/bot.js",
 		"dev": "nodemon"
 	},
+	"type": "module",
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"grammy": "^1.15.3",
-		"sqlite3": "^5.1.6",
-		"tslog": "^4.8.2",
-		"typescript": "^5.0.3"
+		"@netlify/functions": "^2.2.1",
+		"grammy": "^1.19.1",
+		"openai": "^4.11.1",
+		"typescript": "^5.2.2"
 	},
 	"devDependencies": {
-		"@types/node": "^18.15.10",
-		"nodemon": "^2.0.22",
+		"@types/node": "^20.8.4",
+		"dotenv": "^16.3.1",
+		"nodemon": "^3.0.1",
 		"ts-node": "^10.9.1"
 	}
 }

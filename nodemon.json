@@ -1,10 +1,9 @@
 {
 	"watch": [
-		"src"
+		"src",
+		"netlify"
 	],
 	"ext": "ts,json",
-	"ignore": [
-		"src/**/*.spec.ts"
-	],
-	"exec": "ts-node ./src/bot.ts"
+	"ignore": [],
+	"exec": "ts-node-esm ./netlify/functions/bot.ts"
 }
