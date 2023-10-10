@@ -29,15 +29,15 @@ bot.catch((error) => {
 })
 
 bot.on('message', async (ctx) => {
-	fs.writeFileSync(path.resolve(__dirname, '../', '../', 'db.json'), JSON.stringify({
-		id: ctx.message.from.id,
-		name: ctx.message.from.first_name,
-		text: ctx.message.text
-	}))
+	// fs.writeFileSync(path.resolve(__dirname, '../', '../', 'db.json'), JSON.stringify({
+	// 	id: ctx.message.from.id,
+	// 	name: ctx.message.from.first_name,
+	// 	text: ctx.message.text
+	// }))
 	const file = fs.readFileSync(path.resolve(__dirname, '../', '../', 'db.json'), { encoding: 'utf-8' })
 	const data = JSON.parse(file)
-
-	ctx.reply('hello')
+	console.log('data', data)
+	await ctx.reply('hello')
 })
 
 
