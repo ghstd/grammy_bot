@@ -29,10 +29,12 @@ const initData: ChatCompletionMessageParam[] = [
 ]
 
 async function getCompletion(messages: ChatCompletionMessageParam[]) {
+	console.log('getCompletion start')
 	const chatCompletion = await openai.chat.completions.create({
 		messages: messages,
 		model: 'gpt-3.5-turbo'
 	})
+	console.log('getCompletion complete')
 	return chatCompletion
 }
 
