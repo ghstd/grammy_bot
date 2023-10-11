@@ -13,6 +13,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@netlify/functions": "^2.2.1",
+		"@xata.io/client": "^0.26.7",
 		"grammy": "^1.19.1",
 		"openai": "^4.11.1",
 		"typescript": "^5.2.2"

@@ -1,0 +1,16 @@
+{
+  "id": "mig_ckjckqogomseuh95k9o0",
+  "parentID": "mig_ckjbs16faqofslfavufg",
+  "checksum": "1:a95c1bb39d4ec79fa47889a1ab028455aa19467aece25b0496663aea8d87f49f",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "userId",
+          "type": "int"
+        },
+        "table": "messages"
+      }
+    }
+  ]
+}

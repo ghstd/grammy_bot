@@ -3,7 +3,7 @@
 		"rootDir": "./",
 		"noImplicitAny": true,
 		"module": "ESNext",
-		"target": "ES5",
+		"target": "ES6",
 		"allowJs": true,
 		"moduleResolution": "node",
 		"esModuleInterop": true,

@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://AnRm-s-workspace-g3qoj5.eu-central-1.xata.sh/db/chat-bot-log",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}
