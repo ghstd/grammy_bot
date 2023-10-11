@@ -110,33 +110,31 @@ bot.on('message', async (ctx) => {
 	}
 })
 
-
-
 // =========================
-bot.start()
+// bot.start()
 
-// const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
-// 	try {
-// 		const body = JSON.parse(event.body)
+const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
+	try {
+		const body = JSON.parse(event.body)
 
-// 		await bot.init()
-// 		await bot.handleUpdate(body)
-// 		return {
-// 			statusCode: 200,
-// 			body: '',
-// 			headers: {
-// 				"Access-Control-Allow-Origin": "*",
-// 				"Access-Control-Allow-Headers": "Content-Type",
-// 				"Access-Control-Allow-Methods": "GET, POST, OPTION",
-// 			}
-// 		}
-// 	} catch (error) {
-// 		console.error('error handler: ', error)
-// 		return { statusCode: 400, body: 'Error was here' }
-// 	}
-// }
+		await bot.init()
+		await bot.handleUpdate(body)
+		return {
+			statusCode: 200,
+			body: '',
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "Content-Type",
+				"Access-Control-Allow-Methods": "GET, POST, OPTION",
+			}
+		}
+	} catch (error) {
+		console.error('error handler: ', error)
+		return { statusCode: 400, body: 'Error was here' }
+	}
+}
 
-// export { handler }
+export { handler }
 
 
 
