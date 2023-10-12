@@ -16,7 +16,8 @@ const initData = [
 	{ role: 'system', content: 'there should also be forks in the road along the way, where players will have to choose the further direction of the path.' },
 	{ role: 'system', content: 'and there should also be various kinds of obstacles on the way.' },
 	{ role: 'system', content: 'players can find various items, for example: a sword, bow, health potion, etc.' },
-	{ role: 'system', content: 'please describe the introductory scene of the beginning of the journey, and then conduct the game as the game master.' },
+	{ role: 'system', content: 'please briefly describe the introductory scene of the beginning of the journey, then expect responses from the players.' },
+	{ role: 'system', content: 'try to be moderately brief in descriptions.' },
 	{ role: 'system', content: 'use russian language only.' },
 	{ role: 'system', content: 'translate any other language to the russian language whenever possible.' }
 ]
@@ -129,8 +130,19 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 		}
 	}
 
+	if (!event.body.includes('update_id') && !event.body.includes('myMark')) {
+		console.log('unknown event.body === ', event.body)
+		return {
+			statusCode: 200,
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "Content-Type",
+				"Access-Control-Allow-Methods": "GET, POST, OPTION",
+			}
+		}
+	}
+
 	try {
-		console.log('event.body - ', event.body)
 		const body = JSON.parse(event.body)
 
 		await bot.init()
