@@ -1,18 +1,13 @@
 import { Bot } from "grammy"
 import type { Handler, HandlerEvent, HandlerContext } from "@netlify/functions"
-import OpenAI from "openai"
 import { configDotenv } from 'dotenv'
 import { getXataClient } from '../../src/xata.js'
-import type { ChatCompletionMessageParam } from 'openai/resources/chat/index.js'
 configDotenv()
 
 const bot = new Bot(process.env.TEL_TOKEN)
-const openai = new OpenAI({
-	apiKey: process.env.OPENAI_API_KEY,
-})
 const xata = getXataClient()
 
-const initData: ChatCompletionMessageParam[] = [
+const initData = [
 	{ role: 'system', content: 'you are the master of the game dungeons and dragons.' },
 	{ role: 'system', content: 'the game will take place in text dialogue format.' },
 	{ role: 'system', content: 'the game will be a short journey from the starting point to the ending point.' },
@@ -28,15 +23,7 @@ const initData: ChatCompletionMessageParam[] = [
 	{ role: 'system', content: 'start new game' }
 ]
 
-async function getCompletion(messages: ChatCompletionMessageParam[]) {
-	console.log('getCompletion start')
-	const chatCompletion = await openai.chat.completions.create({
-		messages: messages,
-		model: 'gpt-3.5-turbo'
-	})
-	console.log('getCompletion complete')
-	return chatCompletion
-}
+const URL = 'https://grammy-bot-server.onrender.com'
 
 async function dbGetAll() {
 	const records = await xata.db.messages
@@ -57,7 +44,7 @@ async function dbAddOne(data: { role: string, message: string, userId?: number }
 	return record
 }
 
-async function getAllDialog() {
+async function dbGetAllDialog() {
 	const records = await dbGetAll()
 	const data = records.map((record) => {
 		return {
@@ -65,7 +52,19 @@ async function getAllDialog() {
 			content: `${record.userId ? 'player ID: ' + record.userId + '; ' : ''}${record.message}`
 		}
 	})
-	return data as ChatCompletionMessageParam[]
+	return data
+}
+
+async function sendToServer(data: { chat_id: number, message_id: number, messages: Array<Record<'role' | 'content', string>> }) {
+	const response = await fetch(URL, {
+		method: 'POST',
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(data)
+	})
+	const result = await response.json()
+	return result
 }
 
 bot.catch((error) => {
@@ -78,23 +77,25 @@ bot.on('message', async (ctx) => {
 
 		if (message === '/start') {
 			await dbDeleteAll()
-			const completion = await getCompletion(initData)
-			const record = await dbAddOne({
-				role: 'assistant',
-				message: completion.choices[0].message.content
+			const msg = await ctx.reply('...Loading')
+			const serverResponse = await sendToServer({
+				chat_id: msg.from.id,
+				message_id: msg.message_id,
+				messages: initData
 			})
-			await ctx.reply(`master: ${record.message}`)
+			console.log('in /start', serverResponse)
 			return
 		}
 
 		if (message === '/send') {
-			const dialog = await getAllDialog()
-			const completion = await getCompletion([...initData, ...dialog])
-			const record = await dbAddOne({
-				role: 'assistant',
-				message: completion.choices[0].message.content
+			const dialog = await dbGetAllDialog()
+			const msg = await ctx.reply('...Loading')
+			const serverResponse = await sendToServer({
+				chat_id: msg.from.id,
+				message_id: msg.message_id,
+				messages: [...initData, ...dialog]
 			})
-			await ctx.reply(`master: ${record.message}`)
+			console.log('in /send', serverResponse)
 			return
 		}
 
@@ -112,14 +113,46 @@ bot.on('message', async (ctx) => {
 	}
 })
 
+
 // =========================
 // bot.start()
 
 const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
+
+	if (event.httpMethod == 'OPTIONS') {
+		console.log('OPTIONS request')
+		return {
+			statusCode: 200,
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "Content-Type",
+				"Access-Control-Allow-Methods": "GET, POST, OPTION",
+			}
+		}
+	}
+
 	try {
 		const body = JSON.parse(event.body)
 
-		await bot.init()
+		if (body.myMark === 'completion') {
+			await dbAddOne({
+				role: 'assistant',
+				message: body.completion
+			})
+			await bot.api.editMessageText(body.chat_id, body.message_id, `master: ${body.completion}`)
+
+			return {
+				statusCode: 200,
+				body: '',
+				headers: {
+					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Headers": "Content-Type",
+					"Access-Control-Allow-Methods": "GET, POST, OPTION",
+				}
+			}
+		}
+
+		// await bot.init()
 		await bot.handleUpdate(body)
 		return {
 			statusCode: 200,
@@ -130,13 +163,16 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 				"Access-Control-Allow-Methods": "GET, POST, OPTION",
 			}
 		}
+
 	} catch (error) {
-		console.error('error handler: ', error)
-		return { statusCode: 400, body: 'Error was here' }
+		console.error('in Handler', error)
+		return { statusCode: 400, body: 'error in Handler' }
 	}
 }
 
 export { handler }
+
+
 
 
 
