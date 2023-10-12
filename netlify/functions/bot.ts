@@ -130,6 +130,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 	}
 
 	try {
+		console.log('event.body - ', event.body)
 		const body = JSON.parse(event.body)
 
 		await bot.init()
