@@ -12,15 +12,13 @@ const initData = [
 	{ role: 'system', content: 'the game will take place in text dialogue format.' },
 	{ role: 'system', content: 'the game will be a short journey from the starting point to the ending point.' },
 	{ role: 'system', content: 'the journey will involve one or more players.' },
-	{ role: 'system', content: 'you can distinguish players using their IDs.' },
 	{ role: 'system', content: 'along the way, players must meet various opponents from the Dungeons and Dragons universe.' },
 	{ role: 'system', content: 'there should also be forks in the road along the way, where players will have to choose the further direction of the path.' },
 	{ role: 'system', content: 'and there should also be various kinds of obstacles on the way.' },
 	{ role: 'system', content: 'players can find various items, for example: a sword, bow, health potion, etc.' },
 	{ role: 'system', content: 'please describe the introductory scene of the beginning of the journey, and then conduct the game as the game master.' },
 	{ role: 'system', content: 'use russian language only.' },
-	{ role: 'system', content: 'translate any other language to the russian language whenever possible.' },
-	{ role: 'system', content: 'start new game' }
+	{ role: 'system', content: 'translate any other language to the russian language whenever possible.' }
 ]
 
 const URL = 'https://grammy-bot-server.onrender.com'
@@ -79,7 +77,7 @@ bot.on('message', async (ctx) => {
 			await dbDeleteAll()
 			const msg = await ctx.reply('...Loading')
 			const serverResponse = await sendToServer({
-				chat_id: msg.from.id,
+				chat_id: msg.chat.id,
 				message_id: msg.message_id,
 				messages: initData
 			})
@@ -91,7 +89,7 @@ bot.on('message', async (ctx) => {
 			const dialog = await dbGetAllDialog()
 			const msg = await ctx.reply('...Loading')
 			const serverResponse = await sendToServer({
-				chat_id: msg.from.id,
+				chat_id: msg.chat.id,
 				message_id: msg.message_id,
 				messages: [...initData, ...dialog]
 			})
