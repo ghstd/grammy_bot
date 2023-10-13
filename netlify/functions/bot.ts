@@ -72,7 +72,8 @@ bot.catch((error) => {
 
 bot.on('message', async (ctx) => {
 	try {
-		const message = ctx.message.text.slice(17).trim()
+		// const message = ctx.message.text.slice(17).trim()
+		const message = ctx.message.text.trim()
 
 		if (message === '/start') {
 			await dbDeleteAll()
@@ -104,13 +105,15 @@ bot.on('message', async (ctx) => {
 			return
 		}
 
-		await dbAddOne({
-			role: 'user',
-			message: message,
-			userId: ctx.from.id
-		})
-		await ctx.reply(`<<${ctx.from.first_name}>>: ${message}`)
-		return
+		if (message.startsWith('/')) {
+			await dbAddOne({
+				role: 'user',
+				message: message,
+				userId: ctx.from.id
+			})
+			await ctx.reply(`<<${ctx.from.first_name}>>: ${message}`)
+			return
+		}
 
 	} catch (error) {
 		console.log(error)
