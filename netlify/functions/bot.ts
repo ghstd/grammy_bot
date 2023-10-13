@@ -75,7 +75,8 @@ bot.on('message', async (ctx) => {
 		// const message = ctx.message.text.slice(17).trim()
 		const message = ctx.message.text.trim()
 
-		if (message === '/start') {
+		if (message.startsWith('/start')) {
+
 			await dbDeleteAll()
 			const msg = await ctx.reply('...Loading')
 			const serverResponse = await sendToServer({
@@ -87,7 +88,8 @@ bot.on('message', async (ctx) => {
 			return
 		}
 
-		if (message === '/send') {
+		if (message.startsWith('/send')) {
+
 			const dialog = await dbGetAllDialog()
 			const msg = await ctx.reply('...Loading')
 			const serverResponse = await sendToServer({
@@ -99,7 +101,8 @@ bot.on('message', async (ctx) => {
 			return
 		}
 
-		if (message === '/clean') {
+		if (message.startsWith('/clean')) {
+
 			await dbDeleteAll()
 			await ctx.reply('= now db is empty =')
 			return
