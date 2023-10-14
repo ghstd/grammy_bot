@@ -108,8 +108,6 @@ bot.on('message', async (ctx) => {
 			return
 		}
 
-		// if (message.startsWith('/')) {}
-
 		await dbAddOne({
 			role: 'user',
 			message: message,
@@ -119,9 +117,8 @@ bot.on('message', async (ctx) => {
 		const chat = ctx.message.chat.id
 		const messageId = ctx.message.message_id
 
-		await ctx.api.editMessageText(chat, messageId, `<< ${ctx.from.first_name} >>: ${message}`)
-
-		// await ctx.reply(`<< ${ctx.from.first_name} >>: ${message}`)
+		await ctx.api.deleteMessage(chat, messageId)
+		await ctx.reply(`<< ${ctx.from.first_name} >>: ${message}`)
 		return
 
 	} catch (error) {
