@@ -72,7 +72,7 @@ bot.catch((error) => {
 
 bot.on('message', async (ctx) => {
 	try {
-		// const message = ctx.message.text.slice(17).trim()
+
 		const message = ctx.message.text.trim()
 
 		if (message.startsWith('/start')) {
@@ -113,11 +113,6 @@ bot.on('message', async (ctx) => {
 			message: message,
 			userId: ctx.from.id
 		})
-
-		const chat = ctx.message.chat.id
-		const messageId = ctx.message.message_id
-
-		await ctx.api.deleteMessage(chat, messageId)
 		await ctx.reply(`<< ${ctx.from.first_name} >>: ${message}`)
 		return
 
