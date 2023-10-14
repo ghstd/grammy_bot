@@ -108,15 +108,21 @@ bot.on('message', async (ctx) => {
 			return
 		}
 
-		if (message.startsWith('/')) {
-			await dbAddOne({
-				role: 'user',
-				message: message,
-				userId: ctx.from.id
-			})
-			await ctx.reply(`<<${ctx.from.first_name}>>: ${message}`)
-			return
-		}
+		// if (message.startsWith('/')) {}
+
+		await dbAddOne({
+			role: 'user',
+			message: message,
+			userId: ctx.from.id
+		})
+
+		const chat = ctx.message.chat.id
+		const messageId = ctx.message.message_id
+
+		await ctx.editMessageText(`<< ${ctx.from.first_name} >>: ${message}`,)
+
+		// await ctx.reply(`<< ${ctx.from.first_name} >>: ${message}`)
+		return
 
 	} catch (error) {
 		console.log(error)
@@ -164,7 +170,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 				role: 'assistant',
 				message: body.completion
 			})
-			await bot.api.editMessageText(body.chat_id, body.message_id, `<<Master>>: ${body.completion}`)
+			await bot.api.editMessageText(body.chat_id, body.message_id, `<< Master >>: ${body.completion}`)
 
 			return {
 				statusCode: 200,
