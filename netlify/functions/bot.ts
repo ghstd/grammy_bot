@@ -16,7 +16,10 @@ const initData = [
 	{ role: 'system', content: 'there should also be forks in the road along the way, where players will have to choose the further direction of the path.' },
 	{ role: 'system', content: 'and there should also be various kinds of obstacles on the way.' },
 	{ role: 'system', content: 'players can find various items, for example: a sword, bow, health potion, etc.' },
-	{ role: 'system', content: 'please briefly describe the introductory scene of the beginning of the journey, then expect responses from the players.' },
+	{ role: 'system', content: 'first of all, ask the players to introduce themselves, e.g.: find out the player\'s name, race, profession, skills' },
+	{ role: 'system', content: 'Each player, in addition to his name, will give his identifier, with the help of this identifier you will be able to distinguish players when they speak. however, you must address players by name, or by their distinctive features, for example: dear Mr. Dwarf, or Mr. Hobbit.' },
+	{ role: 'system', content: 'after the players introduce themselves, please briefly describe the introductory scene of the beginning of the journey, then expect responses from the players.' },
+	{ role: 'system', content: 'during the game, depending on the circumstances, you have the right to restrict players in their actions, for example: your sword is broken, you forgot your quiver of arrows in the tavern, your spell is ruined, your armor is rusty, your blows have no effect, etc.' },
 	{ role: 'system', content: 'try to be moderately brief in descriptions.' },
 	{ role: 'system', content: 'use russian language only.' },
 	{ role: 'system', content: 'translate any other language to the russian language whenever possible.' }
@@ -113,7 +116,7 @@ bot.on('message', async (ctx) => {
 			message: message,
 			userId: ctx.from.id
 		})
-		await ctx.reply(`<< ${ctx.from.first_name} >>: ${message}`)
+		await ctx.reply(`<<|| ${ctx.from.first_name} ||>> ${message}`)
 		return
 
 	} catch (error) {
@@ -162,7 +165,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 				role: 'assistant',
 				message: body.completion
 			})
-			await bot.api.editMessageText(body.chat_id, body.message_id, `<< Master >>: ${body.completion}`)
+			await bot.api.editMessageText(body.chat_id, body.message_id, `<<|| Master ||>> ${body.completion}`)
 
 			return {
 				statusCode: 200,
