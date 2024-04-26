@@ -33,7 +33,7 @@ async function dbGetAllDialog() {
 	const data = records.map((record) => {
 		return {
 			role: record.role,
-			content: `${record.userId ? 'player ID: ' + record.userId + '; ' : ''}${record.message}`
+			content: `${record.userId ? 'player ID: ' + record.userId + ' - ' : ''}"${record.message}"`
 		}
 	})
 	return data
