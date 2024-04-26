@@ -7,24 +7,6 @@ configDotenv()
 const bot = new Bot(process.env.TEL_TOKEN)
 const xata = getXataClient()
 
-const initData = [
-	{ role: 'system', content: 'you are the master of the game dungeons and dragons.' },
-	{ role: 'system', content: 'the game will take place in text dialogue format.' },
-	{ role: 'system', content: 'the game will be a short journey from the starting point to the ending point.' },
-	{ role: 'system', content: 'the journey will involve one or more players.' },
-	{ role: 'system', content: 'along the way, players must meet various opponents from the Dungeons and Dragons universe.' },
-	{ role: 'system', content: 'there should also be forks in the road along the way, where players will have to choose the further direction of the path.' },
-	{ role: 'system', content: 'and there should also be various kinds of obstacles on the way.' },
-	{ role: 'system', content: 'players can find various items, for example: a sword, bow, health potion, etc.' },
-	{ role: 'system', content: 'first of all, ask the players to introduce themselves, e.g.: find out the player\'s name, race, profession, skills' },
-	{ role: 'system', content: 'Each player, in addition to his name, will give his identifier, with the help of this identifier you will be able to distinguish players when they speak. however, you must address players by name, or by their distinctive features, for example: dear Mr. Dwarf, or Mr. Hobbit.' },
-	{ role: 'system', content: 'after the players introduce themselves, please briefly describe the introductory scene of the beginning of the journey, then expect responses from the players.' },
-	{ role: 'system', content: 'during the game, depending on the circumstances, you have the right to restrict players in their actions, for example: your sword is broken, you forgot your quiver of arrows in the tavern, your spell is ruined, your armor is rusty, your blows have no effect, etc.' },
-	{ role: 'system', content: 'try to be moderately brief in descriptions.' },
-	{ role: 'system', content: 'use russian language only.' },
-	{ role: 'system', content: 'translate any other language to the russian language whenever possible.' }
-]
-
 const URL = 'https://grammy-bot-server.onrender.com'
 
 async function dbGetAll() {
@@ -85,7 +67,7 @@ bot.on('message', async (ctx) => {
 			const serverResponse = await sendToServer({
 				chat_id: msg.chat.id,
 				message_id: msg.message_id,
-				messages: initData
+				messages: []
 			})
 			console.log('in /start', serverResponse)
 			return
@@ -98,7 +80,7 @@ bot.on('message', async (ctx) => {
 			const serverResponse = await sendToServer({
 				chat_id: msg.chat.id,
 				message_id: msg.message_id,
-				messages: [...initData, ...dialog]
+				messages: dialog
 			})
 			console.log('in /send', serverResponse)
 			return
